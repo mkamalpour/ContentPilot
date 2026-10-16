@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="An editorial workspace for researching, drafting, and organizing content with your own AI model."
+    />
+    <title>ContentPilot | Your editorial workspace</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+    <script id="contentpilot-runtime" type="application/json">
+      __CONTENTPILOT_RUNTIME_CONFIG__
+    </script>
+    <script src="/static/main.js" defer></script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to workspace</a>
+    <aside class="sidebar">
+      <a class="brand" href="#studio"
+        ><span class="brand-icon">C<span>.</span></span
+        >ContentPilot</a
+      >
+      <div class="workspace-label">YOUR EDITORIAL WORKSPACE</div>
+      <nav aria-label="Workspace">
+        <button data-page="studio" class="active"><span>01</span> Studio</button
+        ><button data-page="library">
+          <span>02</span> Library <b id="library-count">0</b></button
+        ><button data-page="trends"><span>03</span> Discover trends</button
+        ><button data-page="automations"><span>04</span> Automations</button
+        ><button data-page="assistant"><span>05</span> Assistant</button
+        ><button data-page="activity"><span>06</span> Activity</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="connection">
+          <i id="connection-dot"></i
+          ><span id="connection">Connecting to workspace</span>
+        </div>
+        <button data-page="settings" class="settings-link">
+          Workspace settings <span>&#8599;</span>
+        </button>
+        <p>Research thoughtfully.<br />Publish with intention.</p>
+      </div>
+    </aside>
+    <div class="shell">
+      <header class="topbar">
+        <span id="breadcrumb">Workspace / Studio</span
+        ><span class="local-tag">PRIVATE WORKSPACE</span>
+      </header>
+      <main id="main" tabindex="-1">
+        <div id="notice" role="status" aria-live="polite" hidden></div>
+        <section data-view="studio">
+          <div class="page-heading">
+            <div>
+              <p class="eyebrow">FROM SOURCE TO STORY</p>
+              <h1>A little direction.<br />A fresh perspective.</h1>
+              <p class="lede">
+                Bring a source or an idea. Shape it into your next draft.
+              </p>
+            </div>
+            <div class="edition">
+              THE CONTENT STUDIO<span>Research. Draft. Refine.</span>
+            </div>
+          </div>
+          <div class="studio-grid">
+            <section class="composer panel">
+              <div class="section-title">
+                <h2>Start something good</h2>
+                <span class="step-label">01 / BRIEF</span>
+              </div>
+              <div class="segmented" role="group" aria-label="Draft input">
+                <button id="mode-url" class="selected" aria-pressed="true">
+                  From a URL</button
+                ><button id="mode-topic" aria-pressed="false">
+                  From a topic
+                </button>
+              </div>
+              <form id="generate-form">
+                <label id="source-label" for="source-input">Source URL</label
+                ><textarea
+                  id="source-input"
+                  rows="4"
+                  required
+                  placeholder="https://example.com/a-story-worth-sharing"
+                ></textarea>
+                <p id="source-help" class="help">
+                  Use a public article or page as your starting point.
+                </p>
+                <button class="primary full" id="generate-button" type="submit">
+                  Create a draft <span>&#8599;</span>
+                </button>
+              </form>
+              <div class="editor-note">
+                <span class="note-marker">i</span>
+                <p>
+                  Your draft stays in your library. Publishing is always a
+                  separate, deliberate step.
+                </p>
+              </div>
+            </section>
+            <section class="draft-panel panel">
+              <div class="section-title">
+                <h2>Your draft</h2>
+                <span class="step-label">02 / REVIEW</span>
+              </div>
+              <div id="draft-empty" class="empty draft-empty">
+                <div class="paper-mark">
+                  <span></span><span></span><span></span>
+                </div>
+                <h3>A blank page. Plenty of possibility.</h3>
+                <p>
+                  Your next draft will appear here.<br />Start with a source or
+                  a topic on the left.
+                </p>
+              </div>
+              <article id="draft-content" hidden>
+                <h3 id="draft-title"></h3>
+                <p id="draft-meta" class="help"></p>
+                <div id="draft-body" class="prose"></div>
+                <div id="draft-actions" class="actions"></div>
+              </article>
+            </section>
+          </div>
+          <div class="studio-footer">
+            <span>YOUR WORK, ONE PLACE</span>
+            <p>
+              Find every saved draft in your
+              <button class="text-button" data-page="library">
+                library &#8594;
+              </button>
+            </p>
+            <span id="model-summary">Checking model connection</span>
+          </div>
+        </section>
+        <section data-view="library" hidden>
+          <div class="page-heading compact">
+            <div>
+              <p class="eyebrow">A PLACE FOR YOUR IDEAS</p>
+              <h1>The library</h1>
+              <p class="lede">
+                Your research and drafts, ready for the next edit.
+              </p>
+            </div>
+            <button id="refresh-library" class="secondary">
+              Refresh library
+            </button>
+          </div>
+          <div class="toolbar">
+            <label class="search-label" for="library-search"
+              >Search drafts<input
+                type="search"
+                id="library-search"
+                placeholder="Search topics or draft text" /></label
+            ><span id="library-summary" class="help"></span>
+          </div>
+          <div class="library-layout">
+            <div id="library-list" class="library-list"></div>
+            <section class="panel library-preview">
+              <div id="library-empty" class="empty">
+                <h3>Make room for your next idea.</h3>
+                <p>Select a draft to read, copy, download, or publish.</p>
+              </div>
+              <article id="library-detail" hidden>
+                <p id="detail-meta" class="eyebrow"></p>
+                <h2 id="detail-title"></h2>
+                <div id="detail-body" class="prose"></div>
+                <div id="detail-actions" class="actions"></div>
+              </article>
+            </section>
+          </div>
+          <details class="danger-zone">
+            <summary>Library maintenance</summary>
+            <p>
+              Delete every saved draft permanently. Scheduled jobs are not
+              changed.
+            </p>
+            <button id="clear-library" class="danger">Clear all drafts</button>
+          </details>
+        </section>
+        <section data-view="trends" hidden>
+          <div class="page-heading compact">
+            <div>
+              <p class="eyebrow">FOLLOW YOUR CURIOSITY</p>
+              <h1>What's taking shape?</h1>
+              <p class="lede">
+                Discover a timely topic and give it your own perspective.
+              </p>
+            </div>
+          </div>
+          <div class="toolbar">
+            <label for="trend-source"
+              >Trend source<select id="trend-source">
+                <option value="all">All sources</option>
+                <option value="explodingtopics">Exploding Topics</option>
+                <option value="trendaz">TrendAz</option>
+              </select></label
+            ><button id="refresh-trends" class="primary">
+              Discover trends &#8599;
+            </button>
+          </div>
+          <div id="trends-list" class="trend-list empty">
+            <h3>A good story starts with curiosity.</h3>
+            <p>Choose a source and discover current topics.</p>
+          </div>
+        </section>
+        <section data-view="automations" hidden>
+          <div class="page-heading compact">
+            <div>
+              <p class="eyebrow">MAKE SPACE FOR THE WORK</p>
+              <h1>A rhythm for your content</h1>
+              <p class="lede">
+                Set a research schedule. Keep the final decision yours.
+              </p>
+            </div>
+            <button id="refresh-jobs" class="secondary">Refresh status</button>
+          </div>
+          <div class="automation-grid">
+            <form id="schedule-form" class="panel">
+              <h2>Create a schedule</h2>
+              <label for="job-name"
+                >Task<select id="job-name">
+                  <option value="process">Draft from URLs</option>
+                  <option value="trend">Draft from topics</option>
+                  <option value="all">URLs and topics</option>
+                </select></label
+              ><label for="schedule-urls"
+                >Source URLs <span class="help">one per line</span
+                ><textarea
+                  id="schedule-urls"
+                  rows="3"
+                  placeholder="https://example.com/article"
+                ></textarea></label
+              ><label for="schedule-topics"
+                >Topics <span class="help">one per line</span
+                ><textarea
+                  id="schedule-topics"
+                  rows="3"
+                  placeholder="Ideas you want to explore"
+                ></textarea>
+              </label>
+              <div class="field-pair">
+                <label for="schedule-kind"
+                  >Timing<select id="schedule-kind">
+                    <option value="interval">Repeat at an interval</option>
+                    <option value="date">Run at a specific time</option>
+                  </select></label
+                ><label id="interval-field" for="schedule-interval"
+                  >Interval (HH:MM:SS)<input
+                    id="schedule-interval"
+                    value="01:00:00"
+                    pattern="[0-9]{2,}:[0-5][0-9]:[0-5][0-9]" /></label
+                ><label id="date-field" for="schedule-date" hidden
+                  >Run at (your local time)<input
+                    type="datetime-local"
+                    id="schedule-date"
+                /></label>
+              </div>
+              <details>
+                <summary>Advanced timing</summary>
+                <div class="field-pair">
+                  <label for="schedule-start"
+                    >Start after<input
+                      type="datetime-local"
+                      id="schedule-start" /></label
+                  ><label for="schedule-end"
+                    >Stop after<input type="datetime-local" id="schedule-end"
+                  /></label>
+                </div>
+                <p class="help">
+                  Optional bounds use your browser's local timezone.
+                </p>
+              </details>
+              <label class="check"
+                ><input type="checkbox" id="schedule-enabled" checked /> Enable
+                this schedule immediately</label
+              ><button type="submit" class="primary full">
+                Save schedule &#8599;
+              </button>
+            </form>
+            <section class="panel">
+              <div class="section-title">
+                <h2>Schedule status</h2>
+                <span id="job-count" class="badge">0 active</span>
+              </div>
+              <div id="job-list" class="empty">
+                <p>No active schedules. Start with a task and a time.</p>
+              </div>
+              <button id="cancel-jobs" class="danger full">
+                Cancel all schedules
+              </button>
+              <details class="clock-settings">
+                <summary>Test clock</summary>
+                <p class="help">
+                  Simulated time affects schedule timing. Use real time for
+                  everyday work.
+                </p>
+                <p id="clock-status" class="help">Clock status unavailable</p>
+                <label for="clock-input"
+                  >Simulated local time<input
+                    type="datetime-local"
+                    id="clock-input"
+                /></label>
+                <div class="actions">
+                  <button id="set-clock" class="secondary">
+                    Apply test time</button
+                  ><button id="reset-clock" class="secondary">
+                    Use real time
+                  </button>
+                </div>
+              </details>
+            </section>
+          </div>
+        </section>
+        <section data-view="assistant" hidden>
+          <div class="page-heading compact">
+            <div>
+              <p class="eyebrow">A SECOND PERSPECTIVE</p>
+              <h1>Think it through</h1>
+              <p class="lede">
+                Explore an angle, refine an idea, or work through a headline.
+              </p>
+            </div>
+          </div>
+          <div class="chat-panel panel">
+            <div id="chat-messages" role="log" aria-live="polite">
+              <div class="chat-intro">
+                <span class="note-marker">C.</span>
+                <h2>Where should we start?</h2>
+                <p>
+                  Ask a question or share an idea with your configured model.
+                </p>
+              </div>
+            </div>
+            <form id="chat-form">
+              <label class="sr-only" for="chat-input"
+                >Message your assistant</label
+              ><textarea
+                id="chat-input"
+                rows="2"
+                required
+                placeholder="Help me find a fresh angle on..."
+              ></textarea
+              ><button class="primary" type="submit">Send &#8599;</button>
+            </form>
+          </div>
+        </section>
+        <section data-view="activity" hidden>
+          <div class="page-heading compact">
+            <div>
+              <p class="eyebrow">BEHIND THE WORK</p>
+              <h1>Workspace activity</h1>
+              <p class="lede">
+                Follow recent tasks and understand what needs attention.
+              </p>
+            </div>
+            <button id="refresh-logs" class="secondary">
+              Refresh activity
+            </button>
+          </div>
+          <pre
+            id="activity-log"
+            class="log-view"
+            role="region"
+            tabindex="0"
+            aria-label="Recent application activity"
+          >
+No activity loaded yet.</pre
+          >
+          <p class="help">
+            Refreshes every ten seconds while this view is visible.
+          </p>
+        </section>
+        <section data-view="settings" hidden>
+          <div class="page-heading compact">
+            <div>
+              <p class="eyebrow">YOUR TOOLS, YOUR WORKSPACE</p>
+              <h1>Workspace settings</h1>
+              <p class="lede">
+                Connection details for your local content studio.
+              </p>
+            </div>
+          </div>
+          <div class="panel settings-panel">
+            <h2>Model & publishing</h2>
+            <dl id="connection-details"></dl>
+            <p class="help">
+              Configure your model and WordPress connection in the server
+              environment. Publishing requires an explicit action from a saved
+              draft.
+            </p>
+            <hr />
+            <form id="key-form">
+              <label for="api-key"
+                >Workspace API key (optional)<input
+                  type="password"
+                  id="api-key"
+                  autocomplete="off"
+                  placeholder="Enter the key configured on your server"
+              /></label>
+              <p class="help">
+                Kept in memory for this tab only. Never stored in your browser.
+              </p>
+              <button class="primary" type="submit">Apply key</button>
+            </form>
+          </div>
+        </section>
+      </main>
+      <footer class="footer">
+        <span>ContentPilot</span
+        ><span>An intentional space for better content.</span>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,1 @@
+Original integration checks, retained as reference. They are excluded from pytest because their database isolation occurred after application import. Run the maintained isolated suite with `python -m pytest tests -q`.
