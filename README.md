@@ -108,3 +108,5 @@ main.py      Application launcher
 The original project embedded Hugging Face and WordPress credentials. They have been removed from the public source; replace those credentials before configuring your installation. Personal content and logs are kept locally.
 
 Current lightweight check (Windows, existing Conda base / Python 3.13.5): **29 passed**. No dependency installs, model downloads, live publishing, or heavy datasets were used.
+
+No license file is included.
