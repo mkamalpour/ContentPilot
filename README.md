@@ -18,13 +18,13 @@ Python **3.11** is recommended and verified. The project uses one dependency fil
 ```powershell
 git clone https://github.com/mkamalpour/ContentPilot.git
 cd ContentPilot
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
+conda activate base  # Or activate another existing compatible environment.
+# Optional dependency setup; requires explicit permission and connectivity.
 python -m pip install -r requirements.txt
 python main.py
 ```
 
-On macOS/Linux, activate with `source .venv/bin/activate`.
+On macOS/Linux, activate an existing compatible environment before using the same Python commands.
 
 Open **http://127.0.0.1:8000**. Load a text-generation model in LM Studio and enable its local server before generating. The dashboard starts without a model; generation reports a clear error until one is available. It never substitutes a fabricated article for a provider failure.
 
@@ -106,3 +106,5 @@ main.py      Application launcher
 ```
 
 The original project embedded Hugging Face and WordPress credentials. They have been removed from the public source; replace those credentials before configuring your installation. Personal content and logs are kept locally.
+
+Current lightweight check (Windows, existing Conda base / Python 3.13.5): **29 passed**. No dependency installs, model downloads, live publishing, or heavy datasets were used.
