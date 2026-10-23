@@ -9,6 +9,7 @@
     page = "studio",
     mode = "url",
     contents = [],
+    libraryRequest = 0,
     selectedId = null,
     health = {},
     jobsActive = false;
@@ -230,6 +231,12 @@
     $("draft-body").textContent = record.body || "";
     articleActions(record, $("draft-actions"));
   }
+  function recoverDraftBody(record, library) {
+    if (typeof record.body === "string" && record.body.trim()) return record;
+    // A repeated title or newest item is not proof of response ownership.
+    const match = record.id == null ? null : library.find((item) => item.id === record.id);
+    return match ? { ...record, ...match } : record;
+  }
   function unwrapDraft(result, input) {
     if (result && typeof result === "object") {
       const item =
@@ -275,14 +282,11 @@
         mode === "url" ? "/process" : "/generate_by_trend",
         mode === "url" ? { url: input } : { trend: input, source: "all" },
       );
-      const record = unwrapDraft(result, input);
+      let record = unwrapDraft(result, input);
       await loadLibrary(false);
-      const match =
-        contents.find((x) => x.id === record.id) ||
-        contents.find((x) => x.topic === record.topic) ||
-        contents[0];
-      if (!record.body && match) Object.assign(record, match);
-      if (!record.body)
+      record = recoverDraftBody(record, contents);
+      const hasBody = () => typeof record.body === "string" && record.body.trim().length > 0;
+      if (!hasBody())
         throw new Error(
           "The server finished without returning a draft. Check your library and Activity.",
         );
@@ -302,6 +306,8 @@
             : "Your draft is ready. Review it before publishing.",
         );
     } catch (e) {
+      if (!$("draft-content").hidden)
+        $("draft-meta").textContent = "Previous saved draft retained; the latest request failed.";
       notice(e.message, true);
     } finally {
       state.generating = false;
@@ -311,13 +317,15 @@
     }
   });
   async function loadLibrary(report = true) {
+    const requestId = ++libraryRequest;
     try {
       const data = await request("/contents?limit=500");
+      if (requestId !== libraryRequest) return;
       contents = Array.isArray(data) ? data : data.contents || [];
       $("library-count").textContent = contents.length;
       renderLibrary();
     } catch (e) {
-      if (report) notice(e.message, true);
+      if (report && requestId === libraryRequest) notice(e.message, true);
     }
   }
   function renderLibrary() {

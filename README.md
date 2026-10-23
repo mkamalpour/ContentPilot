@@ -107,6 +107,10 @@ main.py      Application launcher
 
 The original project embedded Hugging Face and WordPress credentials. They have been removed from the public source; replace those credentials before configuring your installation. Personal content and logs are kept locally.
 
-Current lightweight check (Windows, existing Conda base / Python 3.13.5): **29 passed**. No dependency installs, model downloads, live publishing, or heavy datasets were used.
+Current lightweight check (Windows, existing Conda base / Python 3.13.5): **34 passed**. No dependency installs, model downloads, live publishing, or heavy datasets were used.
 
 No license file is included.
+
+Incomplete generation responses never substitute the newest draft or a same-topic draft from the library. A missing response body may be recovered only by its exact returned ID. Invalid or blank bodies produce an error, preserve the input and keep any previous saved draft explicitly labelled as retained. This behavior was checked in the browser with synthetic responses; no live model or WordPress delivery was invoked.
+
+Library refreshes apply only the latest request, preventing an older response from replacing newer results. Optional Node-based frontend regressions cover draft ownership and out-of-order refreshes when Node is already available. Node is not required to run the application.
