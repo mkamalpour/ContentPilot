@@ -1,6 +1,10 @@
 # ContentPilot
 
-A focused workspace for researching sources, drafting articles with AI, and scheduling editorial work. Bring a public URL or a topic, generate a draft, review it in your library, and choose when to send it to WordPress.
+Research a topic or public web page, draft an article with a local or hosted model, and keep your writing in a searchable library. WordPress delivery is optional; you can use ContentPilot just to write and save drafts.
+
+## Try it first
+
+Open **Settings** and check your model connection, then use **Studio** to draft from a topic or public URL. Review the saved result in **Library** before configuring schedules or WordPress. The dashboard opens without a model, but drafting needs a working provider.
 
 ## What it does
 
@@ -13,13 +17,13 @@ A focused workspace for researching sources, drafting articles with AI, and sche
 
 ## Run locally
 
-Python **3.11** is recommended and verified. The project uses one dependency file.
+Use an existing compatible environment. The current offline tests pass in Conda `base` with Python **3.13.5**. The project uses one dependency file.
 
 ```powershell
 git clone https://github.com/mkamalpour/ContentPilot.git
 cd ContentPilot
-conda activate base  # Or activate another existing compatible environment.
-# Optional dependency setup; requires explicit permission and connectivity.
+conda activate base  # Or use your existing compatible environment.
+# Install dependencies if they are not already available in your environment.
 python -m pip install -r requirements.txt
 python main.py
 ```
@@ -107,7 +111,7 @@ main.py      Application launcher
 
 The original project embedded Hugging Face and WordPress credentials. They have been removed from the public source; replace those credentials before configuring your installation. Personal content and logs are kept locally.
 
-Current lightweight check (Windows, existing Conda base / Python 3.13.5): **34 passed**. No dependency installs, model downloads, live publishing, or heavy datasets were used.
+Checked on Windows with Python 3.13.5 (Conda base): **34 tests passed**.
 
 No license file is included.
 
