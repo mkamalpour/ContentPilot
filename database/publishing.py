@@ -73,8 +73,13 @@ def publish_content(content, status="draft"):
         if response.status_code not in {200, 201}:
             raise ValueError("WordPress returned an unexpected response")
         data = response.json()
+        if not isinstance(data, dict) or type(data.get('id')) is not int or data['id'] <= 0:
+            raise ValueError('WordPress did not return a valid positive post ID; local content is preserved')
+        returned_status = data.get('status', status)
+        if not isinstance(returned_status, str) or returned_status not in {'draft', 'publish', 'pending', 'future', 'private', 'trash'}:
+            raise ValueError('WordPress returned an invalid post status; review delivery before retrying')
         return {
             "id": data["id"],
             "url": data.get("link", ""),
-            "status": data.get("status", status),
+            "status": returned_status,
         }

@@ -58,9 +58,14 @@ def make_request(url, headers=None):
             }
         )
         for _ in range(6):
+            if time.monotonic() >= deadline:
+                raise ScrapeError('The source exceeded the request time limit')
             validate_public_url(url)
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise ScrapeError('The source exceeded the request time limit')
             with client.get(
-                url, timeout=(5, 20), allow_redirects=False, stream=True
+                url, timeout=(min(5, remaining), min(20, remaining)), allow_redirects=False, stream=True
             ) as response:
                 if response.is_redirect or response.is_permanent_redirect:
                     location = response.headers.get("Location")

@@ -111,7 +111,9 @@ main.py      Application launcher
 
 The original project embedded Hugging Face and WordPress credentials. They have been removed from the public source; replace those credentials before configuring your installation. Personal content and logs are kept locally.
 
-Checked on Windows with Python 3.13.5 (Conda base): **34 tests passed**.
+Checked on Windows with Python 3.13.5 (Conda base): **41 tests passed**.
+
+Source redirects now share the remaining request budget instead of each receiving a fresh timeout. WordPress receipts are checked for a positive integer post ID and a recognized status before delivery is reported as successful. These checks preserve local articles on bad remote responses; no live publishing is performed by the test suite.
 
 No license file is included.
 
