@@ -1,5 +1,7 @@
 # ContentPilot
 
+**[Explore the interactive project presentation](docs/overview.html)** — open locally in your browser; works offline.
+
 Research a topic or public web page, draft an article with a local or hosted model, and keep your writing in a searchable library. WordPress delivery is optional; you can use ContentPilot just to write and save drafts.
 
 ## Try it first
