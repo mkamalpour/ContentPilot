@@ -8,6 +8,22 @@ Research a topic or public web page, draft an article with a local or hosted mod
 
 Open **Settings** and check your model connection, then use **Studio** to draft from a topic or public URL. Review the saved result in **Library** before configuring schedules or WordPress. The dashboard opens without a model, but drafting needs a working provider.
 
+<details>
+<summary>Using the existing managed Windows workspace</summary>
+
+Assigned environment: **base** — Python **3.13.5**, using the existing Conda environment `base`. Open `Workspaces/ContentPilot.code-workspace` from the workspace folder to select its interpreter.
+
+From this repository folder in PowerShell:
+
+```powershell
+& '..\Launchers\ContentPilot.cmd' --check --deep
+& '..\Launchers\ContentPilot.cmd'
+```
+
+The launcher activates the assigned environment and checks dependencies. It does not install packages or download models. These launchers belong to the managed parent workspace; for a standalone clone, follow the setup instructions below in your own compatible environment. Keep optional model/provider prerequisites separate from the offline examples.
+
+</details>
+
 ## What it does
 
 - **Source-grounded drafting:** URL-based articles retain the original excerpt and source URL in the writing prompt.
