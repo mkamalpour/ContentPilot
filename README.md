@@ -143,3 +143,9 @@ Library refreshes apply only the latest request, preventing an older response fr
 
 See the [engineering audit](docs/ENGINEERING_AUDIT.md) for the dated test baseline,
 project assessment, environment assignment and remaining work.
+
+## Additional workflow improvements
+
+Passive configuration readiness checks cover provider selection, endpoint syntax, hosted credentials/model and request limits without displaying credentials or claiming a live model connection.
+
+Workspace settings → Model & publishing. /health includes the same readiness checks.

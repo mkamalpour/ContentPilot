@@ -286,6 +286,7 @@ def dashboard(request: Request):
 
 @app.get("/health")
 def health():
+    from core.llm import configuration_readiness
     return {
         "status": "ok",
         "model_provider": config.MODEL_PROVIDER,
@@ -294,6 +295,7 @@ def health():
         else config.LMSTUDIO_MODEL or "Auto-detect",
         "wordpress_configured": wordpress_configured(),
         "auto_publish": config.WORDPRESS_AUTO_PUBLISH,
+        'readiness': configuration_readiness(),
     }
 
 

@@ -12,6 +12,33 @@ class ModelUnavailable(RuntimeError):
     pass
 
 
+def configuration_readiness():
+    """Passive setup diagnostics; never contact a provider or reveal credentials."""
+    from urllib.parse import urlsplit
+    import math
+    checks = []
+    provider = config.MODEL_PROVIDER
+    checks.append(dict(check='provider', ok=provider in ('local', 'hf'),
+                       message='Choose MODEL_PROVIDER=local or hf.'))
+    if provider == 'local':
+        try:
+            parsed = urlsplit(config.LMSTUDIO_API_BASE)
+            valid = parsed.scheme in ('http', 'https') and bool(parsed.hostname)
+        except ValueError:
+            valid = False
+        checks.append(dict(check='local_endpoint', ok=valid,
+                           message='Use an HTTP(S) LMSTUDIO_API_BASE, start LM Studio and load a generation model.'))
+    elif provider == 'hf':
+        checks.append(dict(check='hosted_credentials', ok=bool(config.HF_TOKEN.strip()),
+                           message='Set HF_TOKEN locally before hosted generation.'))
+        checks.append(dict(check='hosted_model', ok=bool(config.HF_MODEL.strip()),
+                           message='Set HF_MODEL to a supported text-generation model.'))
+    checks.append(dict(check='request_limits', ok=math.isfinite(config.MODEL_TIMEOUT) and config.MODEL_TIMEOUT > 0 and config.MAX_TOKENS > 0,
+                       message='MODEL_TIMEOUT and MAX_TOKENS must be positive; timeout must be finite.'))
+    return dict(configuration_complete=all(item['ok'] for item in checks),
+                model_health='not_checked', checks=checks)
+
+
 def format_text(text, **kwargs):
     """Remove reasoning wrappers while preserving numbers, punctuation and Markdown."""
     text = re.sub(r"<think>.*?(?:</think>|$)", "", str(text), flags=re.S).strip()

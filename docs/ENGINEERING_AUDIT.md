@@ -26,7 +26,7 @@ VS Code's local interpreter settings were aligned with the same assignment.
 
 ## Verification
 
-- **Automated tests:** 41 passed.
+- **Automated tests:** 43 passed; 0 reported skips; 0 private-report cases deselected.
 - **Startup check:** `run.cmd --check` passed from outside the repository;
   required startup modules were imported in the assigned environment.
 - **Tested runtime:** Windows; Conda base; Python 3.13.5.
@@ -49,7 +49,7 @@ python -m pytest tests -q -p no:cacheprovider
 ## Next three upgrades
 
 1. Draft provenance summary.
-2. Provider readiness diagnostics.
+2. Explicit provider connection tests with bounded timeouts.
 3. Revision comparison and recovery.
 
 Expected benefit: clearer decisions, more reproducible workflows and stronger evidence
@@ -58,3 +58,17 @@ for quality. These are proposed upgrades, not implemented features or measured s
 External assets: A configured model is needed for generation; WordPress and live scraping were not exercised.
 
 No root license file is set. No license was selected or changed.
+
+## Additional implementation pass
+
+Passive configuration readiness checks cover provider selection, endpoint syntax, hosted credentials/model and request limits without displaying credentials or claiming a live model connection.
+
+Use: Workspace settings → Model & publishing. /health includes the same readiness checks.
+
+Verification: the complete offline suite passed in the assigned **base**
+environment after this change (43 tests). Regression fixtures remain
+temporary/synthetic. Optional real-model/data quality and external integrations
+remain unverified. No packages, models or additional environments were installed.
+
+The earlier numeric scores are subjective historical assessments; new features do
+not automatically establish a higher score or production readiness.

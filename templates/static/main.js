@@ -709,6 +709,11 @@
           health.auto_publish ? "Enabled on server" : "Disabled",
         ],
       ].forEach(([k, v]) => dl.append(el("dt", k), el("dd", v)));
+      dl.append(el('dt', 'Model connection'), el('dd', 'Not tested by this configuration check'));
+      for (const check of health.readiness?.checks || []) {
+        dl.append(el('dt', check.check.replaceAll('_', ' ')),
+          el('dd', check.ok ? 'Configuration present' : check.message));
+      }
     } catch (e) {
       $("connection").textContent = "Connection needs attention";
       $("connection-dot").classList.remove("online");
