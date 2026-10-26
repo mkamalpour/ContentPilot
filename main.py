@@ -3,8 +3,20 @@
 import argparse
 import os
 import sys
-from core import config
-import uvicorn
+
+try:
+    from core import config
+    import uvicorn
+except (ImportError, ModuleNotFoundError) as exc:
+    print(
+        "\nContentPilot could not start because a required dependency is missing.\n"
+        "\nUse the assigned environment and install the project requirements first:\n"
+        "  conda activate base\n"
+        "  python -m pip install -r requirements.txt\n"
+        "\nIf you are using the managed workspace, open the project workspace for the assigned interpreter.\n"
+        f"Original error: {type(exc).__name__}: {exc}\n"
+    )
+    raise SystemExit(2)
 
 
 def main():
